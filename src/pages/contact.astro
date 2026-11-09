@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { magasins, itineraire } from '../data/magasins';
+---
+<Base
+  title="Nos six magasins | Kausar Liège, Verviers et Alleur"
+  description="Adresses, horaires, téléphones et photos des six magasins Kausar : Ethnic Supermarket, Ethnic Market Cathédrale et Place du Marché, Librairie Market, Exotic Market Verviers et Exotic City."
+  page="contact"
+>
+  <section class="wrap page-tete">
+    <h1>Nos six magasins</h1>
+    <p>Passez nous voir, ou appelez directement le magasin.</p>
+    <ul class="raccourcis" role="list">
+      {magasins.map((m) => (
+        <li><a href={`#${m.slug}`} style={`--c:${m.couleur}`}><span class="sq" aria-hidden="true"></span>{m.enseigne}</a></li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="wrap fiches">
+    {magasins.map((m, i) => m.photos.length ? (
+      <article class="fiche" id={m.slug} style={`--c:${m.couleur}; --i:0`} data-reveal data-slug={m.slug} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined} aria-labelledby={`nom-${m.slug}`}>
+        <div class="galerie" data-galerie>
+          <div class="galerie__grande">
+            {m.photos.map((p, j) => (
+              <Image src={p.src} alt={p.alt} widths={[640, 1000]} sizes="(min-width: 76rem) 44rem, (min-width: 60rem) 56vw, 92vw" width={1000} class={j === 0 ? 'is-on' : undefined} style={p.pos ? `object-position:${p.pos}` : undefined} loading={i < 2 && j === 0 ? 'eager' : 'lazy'} />
+            ))}
+          </div>
+          <div class="galerie__vignettes">
+            {m.photos.map((p, j) => (
+              <button type="button" aria-pressed={j === 0 ? 'true' : 'false'} aria-label={`Photo ${j + 1} : ${p.alt}`} data-index={j}>
+                <Image src={p.src} alt="" widths={[200, 320]} sizes="10rem" width={320} />
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="fiche__infos">
+          <h2 id={`nom-${m.slug}`}><Image src={m.logo} alt={m.nom} width={240} densities={[1, 2]} /></h2>
+          {m.semaine && <p class="etat" data-etat={m.slug}>{m.horairesCourt}</p>}
+          <p>{m.description}</p>
+          <dl>
+            <dt>Adresse</dt><dd>{m.rue}, {m.ville}</dd>
+            {m.horaires && <><dt>Horaires</dt><dd>{m.horaires}</dd></>}
+            <dt>Téléphone</dt><dd><a href={`tel:${m.telHref}`}>{m.tel}</a></dd>
+            <dt>TVA</dt><dd>{m.tva}</dd>
+          </dl>
+          <p class="fiche__actions">
+            <a class="btn btn--petit" href={itineraire(m)} aria-label={`Itinéraire vers ${m.nom}, ${m.rue}`}>Itinéraire</a>
+            <a class="btn btn--creux btn--petit" href={`tel:${m.telHref}`} aria-label={`Appeler ${m.nom}`}>Appeler</a>
+          </p>
+        </div>
+      </article>
+    ) : (
+      <article class="fiche fiche--pro" id={m.slug} style={`--c:${m.couleur}`} data-reveal aria-labelledby={`nom-${m.slug}`}>
+        <div class="fiche__marque">
+          <Image src={m.logo} alt="" width={320} densities={[1, 2]} />
+          <p>{m.sousTitre}</p>
+        </div>
+        <div class="fiche__infos">
+          <h2 id={`nom-${m.slug}`} class="sr-only">{m.nom}</h2>
+          <p>{m.description}</p>
+          <dl>
+            <dt>Adresse</dt><dd>{m.rue}, {m.ville}</dd>
+            <dt>Téléphone</dt><dd><a href={`tel:${m.telHref}`}>{m.tel}</a></dd>
+            {m.email && <><dt>E-mail</dt><dd><a href={`mailto:${m.email}`}>{m.email}</a></dd></>}
+            {m.web && <><dt>Site</dt><dd><a href={m.web}>{m.web.replace('https://', '')}</a></dd></>}
+            <dt>TVA</dt><dd>{m.tva}</dd>
+          </dl>
+          <p class="fiche__actions">
+            <a class="btn btn--petit" href={itineraire(m)} aria-label={`Itinéraire vers ${m.nom}, ${m.rue}`}>Itinéraire</a>
+            <a class="btn btn--creux btn--petit" href={`tel:${m.telHref}`} aria-label={`Appeler ${m.nom}`}>Appeler</a>
+          </p>
+        </div>
+      </article>
+    ))}
+  </div>
+</Base>
+
+<script>
+  // la galerie : un clic sur une vignette change la grande photo
+  document.querySelectorAll<HTMLElement>('[data-galerie]').forEach((g) => {
+    const grandes = [...g.querySelectorAll<HTMLImageElement>('.galerie__grande img')];
+    const boutons = [...g.querySelectorAll<HTMLButtonElement>('button[data-index]')];
+    boutons.forEach((b) => b.addEventListener('click', () => {
+      const n = Number(b.dataset.index);
+      grandes.forEach((img, j) => {
+        if (j === n) img.loading = 'eager';
+        img.classList.toggle('is-on', j === n);
+      });
+      boutons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    }));
+  });
+</script>

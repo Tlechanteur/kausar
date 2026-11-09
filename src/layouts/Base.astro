@@ -1,0 +1,92 @@
+---
+import '@fontsource-variable/outfit';
+import '../styles/kausar.css';
+import { Image } from 'astro:assets';
+import { facebook } from '../data/magasins';
+import { lien } from '../lib/lien';
+import logo from '../assets/logos/logosite01XS.jpg';
+
+interface Props {
+  title: string;
+  description: string;
+  page?: 'accueil' | 'contact';
+}
+const { title, description, page = 'accueil' } = Astro.props;
+const liens = [
+  { href: lien('/contact'), label: 'Nos magasins', page: 'contact' },
+  { href: facebook, label: 'Promotions' },
+  { href: lien('/#marques'), label: 'Nos marques' },
+  { href: lien('/#a-propos'), label: 'À propos' },
+];
+---
+<!doctype html>
+<html lang="fr-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#03387c" />
+    <link rel="icon" href={lien('/logoicon64.jpg')} type="image/jpeg" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <style is:global>html, body { overflow-x: clip; }</style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Aller au contenu</a>
+    <header class="entete">
+      <div class="bandes" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <nav class="wrap nav" aria-label="Navigation principale">
+        <a href={lien('/')} class="nav__logo"><Image src={logo} alt="Kausar group, accueil" width={190} densities={[1, 2]} loading="eager" /></a>
+        <ul class="nav__liens">
+          {liens.map((l) => <li><a href={l.href} aria-current={l.page === page ? 'page' : undefined}>{l.label}</a></li>)}
+        </ul>
+        <details class="menu">
+          <summary>Menu</summary>
+          <ul>
+            {liens.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </details>
+        <a class="btn btn--petit" href={lien('/#magasins')}>Trouver mon magasin</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="pied">
+      <div class="wrap pied__in">
+        <div>
+          <Image src={logo} alt="Kausar group" width={200} densities={[1, 2]} />
+          <p class="pied__txt">Depuis 1990, année où il a ouvert son premier magasin, Javed Kausar n’a cessé de développer son activité : six magasins, dont une grande surface de plus de 900 m², au cœur de la Cité ardente, à Verviers et à Alleur.</p>
+        </div>
+        <div>
+          <h2>Kausar</h2>
+          <ul>
+            <li><a href={lien('/#a-propos')}>À propos de Kausar</a></li>
+            <li><a href={lien('/contact')}>Nos magasins</a></li>
+            <li><a href={facebook}>News et promotions</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Nous contacter</h2>
+          <ul>
+            <li><a href={lien('/contact#coronmeuse')}>Ethnic Supermarket</a></li>
+            <li><a href={lien('/contact#exotic-city')}>Exotic City, pour les pros</a></li>
+            <li><a href={facebook}>Kausar sur Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p class="wrap">Copyright 2026 Kausar | All Rights Reserved | Photos &amp; website by <a href="https://www.lechanteur.be">lechanteur.be</a> for Alchimie sprl</p>
+      </div>
+    </footer>
+
+    <script>
+      import { etats, reveler, compter } from '../scripts/vivant';
+      etats(); reveler(); compter();
+      // le menu mobile se referme après un clic
+      document.querySelectorAll<HTMLAnchorElement>('.menu a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
+    </script>
+  </body>
+</html>

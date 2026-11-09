@@ -1,0 +1,21 @@
+# compilation
+dist/
+dist-test/
+.astro/
+
+# dépendances
+node_modules/
+
+# journaux
+npm-debug.log*
+
+# variables d'environnement
+.env
+.env.*
+
+# outils et systèmes
+.hallmark/
+.playwright-mcp/
+.idea/
+.DS_Store
+Thumbs.db

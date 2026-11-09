@@ -1,0 +1,188 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { magasins, facebook } from '../data/magasins';
+import { lien } from '../lib/lien';
+import em01 from '../assets/photos/em01.jpg';
+import c1 from '../assets/photos/c1.jpg';
+import c2 from '../assets/photos/c2.jpg';
+import c3 from '../assets/photos/c3.jpg';
+import fruits from '../assets/photos/fruits02slb.jpg';
+import allee from '../assets/photos/kausar02bs.jpg';
+import k03 from '../assets/photos/k03.jpg';
+import k08 from '../assets/photos/k08.jpg';
+import m1 from '../assets/photos/m1.jpg';
+import m2 from '../assets/photos/m2.jpg';
+import africaVillage from '../assets/marques/africa-village.png';
+import exoticFoods from '../assets/marques/exotic-foods.png';
+import desi from '../assets/marques/desi.png';
+import royalVillage from '../assets/marques/royal-village.png';
+import careAndClear from '../assets/marques/care-and-clear.png';
+import thaiVillage from '../assets/marques/thai-village.png';
+import exoticNuts from '../assets/marques/exotic-nuts.png';
+import deChezNous from '../assets/marques/de-chez-nous.png';
+import royalSeaFoods from '../assets/marques/royal-sea-foods.png';
+import utouch from '../assets/marques/utouch.png';
+import javed from '../assets/photos/javed-kausar.png';
+
+// la mosaïque du haut : des photos qui changent et des carrés aux couleurs des logos
+const mosaique = [
+  { a: em01, b: c1, alt: 'Fruits et légumes à l’entrée du magasin de la place du Marché' },
+  { c: 'var(--rouge)', mot: 'Afrique' },
+  { a: allee, b: k03, alt: 'Une allée du supermarché de Coronmeuse, les huiles au premier plan' },
+  { c: 'var(--vert)', mot: 'Asie', clair: true },
+  { a: fruits, b: k08, alt: 'Des cageots d’oranges, de pommes et de bananes' },
+  { c: 'var(--ciel)', mot: 'Europe' },
+  { a: c3, b: m2, alt: 'Le rayon cosmétiques et soins' },
+  { c: 'var(--magenta)', mot: 'Beauté' },
+  { a: m1, b: c2, alt: 'Riz, haricots et fruits secs en rayon' },
+];
+
+// les marques propres de Kausar, du bandeau de l'ancien site (logos d'origine, 200 × 200)
+const marques = [
+  { src: africaVillage, nom: 'Africa Village' },
+  { src: exoticFoods, nom: 'Exotic Foods' },
+  { src: desi, nom: 'Desi Finest Foods' },
+  { src: royalVillage, nom: 'Royal Village' },
+  { src: careAndClear, nom: 'Care and Clear Cosmetics' },
+  { src: thaiVillage, nom: 'Thai Village' },
+  { src: exoticNuts, nom: 'Exotic Nuts' },
+  { src: deChezNous, nom: 'De chez nous' },
+  { src: royalSeaFoods, nom: 'Royal Sea Foods' },
+  { src: utouch, nom: 'Utouch' },
+];
+
+// la visite virtuelle Google Street View du supermarché de Coronmeuse (lien d'intégration fourni par le client)
+const visite = 'https://www.google.com/maps/embed?pb=!4v1794242536862!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJQ0UtcWJCSkE.!2m2!1d50.65221724117803!2d5.604085754931399!3f282.53659767950313!4f-11.194089771591337!5f0.7820865974627469';
+---
+<Base
+  title="Kausar, le monde entier au coin de la rue | Liège et Verviers"
+  description="Alimentation africaine et asiatique, cosmétiques, frais et surgelés : six magasins Kausar à Liège, Verviers et Alleur, ouverts 7 jours sur 7."
+>
+  <section class="wrap hero">
+    <div>
+      <p class="hero__label"><span class="sq" aria-hidden="true"></span>Liège et Verviers, depuis 1990</p>
+      <h1>Le monde entier, au coin de la rue.</h1>
+      <p class="hero__lede">Alimentation africaine et asiatique, cosmétiques, frais et surgelés : 6 magasins Kausar où toutes les cultures se croisent.</p>
+      <p class="hero__actions">
+        <a class="btn btn--rouge" href={facebook}>Voir les promotions</a>
+        <a class="btn btn--creux" href="#magasins">Nos 6 magasins</a>
+      </p>
+    </div>
+    <div class="mosaique">
+      {mosaique.map((t, i) => t.a ? (
+        <figure class="tuile" style={`--i:${i}`}>
+          <Image src={t.a} alt={t.alt} widths={[320, 560]} sizes="(min-width: 60rem) 14vw, 30vw" width={560} loading="eager" />
+          <Image src={t.b} alt="" widths={[320, 560]} sizes="(min-width: 60rem) 14vw, 30vw" width={560} class="tuile__b" />
+        </figure>
+      ) : (
+        <div class:list={['tuile', 'tuile--couleur', { 'tuile--clair': t.clair }]} style={`--i:${i}; --c:${t.c}`}><span>{t.mot}</span></div>
+      ))}
+    </div>
+  </section>
+
+  <section id="magasins" class="section">
+    <div class="wrap">
+      <div class="titre">
+        <h2>Votre Kausar, près de chez vous</h2>
+        <p data-maintenant>7 jours sur 7 à Liège.</p>
+      </div>
+      <ul class="liste" role="list">
+        {magasins.map((m, i) => (
+          <li class:list={['ligne', { 'ligne--pro': m.pro }]} style={`--c:${m.couleur}; --i:${i}`} data-reveal data-slug={m.semaine ? m.slug : undefined} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined}>
+            <span class="sq" aria-hidden="true"></span>
+            <div class="ligne__nom">
+              <h3>{m.enseigne}</h3>
+              <p class="ligne__sous">{m.sousTitre}</p>
+            </div>
+            <p class="ligne__adresse">{m.rue}, {m.ville.replace(/^\d+ /, '')}</p>
+            <p class="ligne__heures">{m.horairesCourt ?? <a href={`tel:${m.telHref}`}>{m.tel}</a>}</p>
+            <p class="etat" data-etat={m.semaine ? m.slug : undefined}>{m.semaine ? '' : 'Hors centre-ville'}</p>
+            <a class="btn btn--creux btn--petit" href={lien(`/contact#${m.slug}`)} aria-label={`Voir le magasin ${m.nom}`}>Voir le magasin</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="chiffres" aria-label="Kausar en chiffres">
+    <div class="wrap chiffres__in">
+      <p style="--c: var(--ciel)"><strong data-count="2450">2450</strong> articles différents</p>
+      <p style="--c: var(--vert)"><strong>1990</strong> notre premier magasin à Liège</p>
+      <p style="--c: var(--blanc)"><strong><span data-count="900">900</span> m²</strong> au quai de Coronmeuse</p>
+      <p style="--c: var(--rose)"><strong data-count="6">6</strong> magasins</p>
+    </div>
+  </section>
+
+  <section id="marques" class="section section--fond marques">
+    <div class="wrap">
+      <h2>Les marques Kausar</h2>
+      <p class="lead">Nos propres marques, de l’Afrique à l’Asie, en rayon dans nos magasins.</p>
+    </div>
+    <div class="defile">
+      {[0, 1].map((k) => (
+        <ul class="defile__piste" role="list" aria-hidden={k === 1 ? 'true' : undefined}>
+          {marques.map((b) => (
+            <li><Image src={b.src} alt={k === 0 ? b.nom : ''} width={160} densities={[1, 2]} /></li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </section>
+
+  <section id="a-propos" class="section">
+    <div class="wrap apropos">
+      <div class="apropos__txt" data-reveal>
+        <h2>Vous êtes ici chez vous</h2>
+        <p>À travers les rayonnages de nos magasins, vous voyagez sans vous déplacer : des produits du bout du monde, leurs odeurs, leurs couleurs, et les marques que vous cherchez.</p>
+        <p>Depuis l’ouverture de son premier magasin en 1990, Javed Kausar n’a cessé de développer son activité. Chez Kausar, « commerce de proximité » prend tout son sens.</p>
+      </div>
+      <figure class="citation" data-reveal style="--i:1">
+        <blockquote>« Le métissage naturel passe aussi par nos assiettes. »</blockquote>
+        <figcaption><Image src={javed} alt="" width={64} densities={[1, 2]} />Javed Kausar, fondateur</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="promo-titre">
+    <div class="promo" data-reveal>
+      <div>
+        <h2 id="promo-titre">Les promos, c’est sur Facebook</h2>
+        <p>Chaque semaine, nos nouveautés et nos prix choisis.</p>
+      </div>
+      <a class="btn btn--blanc" href={facebook}>Voir les promotions</a>
+    </div>
+  </section>
+
+  <section id="visite" class="section" aria-labelledby="visite-titre">
+    <div class="wrap">
+      <div class="titre">
+        <h2 id="visite-titre">Entrez, c’est ouvert</h2>
+        <p>La visite virtuelle du Kausar Ethnic Supermarket, quai de Coronmeuse.</p>
+      </div>
+      <div class="visite" data-visite={visite}>
+        <Image src={allee} alt="" widths={[640, 1000, 1400]} sizes="(min-width: 76rem) 76rem, 100vw" width={1400} class="visite__photo" />
+        <a class="btn btn--rouge visite__bouton" href={visite} target="_blank" rel="noopener" data-visite-bouton>Lancer la visite virtuelle</a>
+        <p class="visite__note">Le bouton charge Google Street View, qui dépose ses propres cookies.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // la visite Google ne se charge qu'au clic : aucun cookie Google avant que le visiteur le demande
+  document.querySelectorAll<HTMLElement>('[data-visite]').forEach((zone) => {
+    zone.querySelector('[data-visite-bouton]')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const f = document.createElement('iframe');
+      f.src = zone.dataset.visite!;
+      f.title = 'Visite virtuelle du Kausar Ethnic Supermarket, quai de Coronmeuse, sur Google Street View';
+      f.allowFullscreen = true;
+      f.allow = 'accelerometer; gyroscope; fullscreen';
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      zone.replaceChildren(f);
+      zone.classList.add('is-chargee');
+      f.focus();
+    });
+  });
+</script>

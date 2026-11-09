@@ -1,0 +1,22 @@
+{
+  "name": "kausar",
+  "type": "module",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "build:test": "cross-env KAUSAR_SITE=https://test.lechanteur.be KAUSAR_BASE=/kausar astro build --outDir dist-test"
+  },
+  "dependencies": {
+    "@fontsource-variable/outfit": "^5.3.0",
+    "astro": "^7.4.7"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}
