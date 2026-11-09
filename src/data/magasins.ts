@@ -17,6 +17,7 @@ import k01 from '../assets/photos/k01.jpg';
 import k03 from '../assets/photos/k03.jpg';
 import k04 from '../assets/photos/k04.jpg';
 import k08 from '../assets/photos/k08.jpg';
+import exoticCity from '../assets/photos/exotic-city-alleur.jpg';
 import logoSupermarket from '../assets/logos/logosite02XS.jpg';
 import logoEthnic from '../assets/logos/logosite04XS.jpg';
 import logoLibrairie from '../assets/logos/logosite05XS.jpg';
@@ -246,7 +247,9 @@ export const magasins: Magasin[] = [
     email: 'info@exoticcity.be',
     web: 'https://www.exoticcity.be',
     tva: 'BE0882540147',
-    photos: [],
+    photos: [
+      { src: exoticCity, alt: 'Une allée de l’entrepôt Exotic City à Alleur, les rayonnages de cosmétiques sur palettes' },
+    ],
     logo: logoExoticCity,
     couleur: '#e81820',
     pro: true,

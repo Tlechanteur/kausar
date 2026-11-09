@@ -20,7 +20,7 @@ import { lien } from '../lib/lien';
   </section>
 
   <div class="wrap fiches">
-    {magasins.map((m, i) => m.photos.length ? (
+    {magasins.map((m, i) => !m.pro ? (
       <article class="fiche" id={m.slug} style={`--c:${m.couleur}; --i:0`} data-reveal data-slug={m.slug} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined} aria-labelledby={`nom-${m.slug}`}>
         <div class="galerie" data-galerie>
           <div class="galerie__grande">
