@@ -127,7 +127,7 @@ const schema = {
           <h2 id="visite-titre">Entrez, c’est ouvert</h2>
           <p>Faites le tour du magasin sur Google Street View.</p>
         </div>
-        <Visite url={m.visite} photo={(autresPhotos[0] ?? une).src} titre={`Visite virtuelle du ${m.nom}, ${m.rue}, sur Google Street View`} />
+        <Visite url={m.visite} photo={(autresPhotos[0] ?? une)?.src} titre={`Visite virtuelle du ${m.nom}, ${m.rue}, sur Google Street View`} />
       </div>
     </section>
   )}

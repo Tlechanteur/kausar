@@ -8,14 +8,15 @@ import { Image } from 'astro:assets';
 
 interface Props {
   url: string;
-  photo: ImageMetadata;
+  /** La photo derrière le bouton ; sans photo, un fond marine uni. */
+  photo?: ImageMetadata;
   /** Le titre de l'iframe, lu par les lecteurs d'écran. */
   titre: string;
 }
 const { url, photo, titre } = Astro.props;
 ---
 <div class="visite" data-visite={url} data-visite-titre={titre}>
-  <Image src={photo} alt="" widths={[640, 1000, 1400]} sizes="(min-width: 76rem) 76rem, 100vw" width={1400} class="visite__photo" />
+  {photo && <Image src={photo} alt="" widths={[640, 1000, 1400]} sizes="(min-width: 76rem) 76rem, 100vw" width={1400} class="visite__photo" />}
   <a class="btn btn--rouge visite__bouton" href={url} target="_blank" rel="noopener" data-visite-bouton>Lancer la visite virtuelle</a>
   <p class="visite__note">Le bouton charge Google Street View, qui dépose ses propres cookies.</p>
 </div>
