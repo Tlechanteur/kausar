@@ -76,7 +76,7 @@ Il faut Node 22 ou plus récent.
 
 Le site est hébergé sur Cloudflare Workers (fichiers statiques), dans le Worker `kausar` (`wrangler.jsonc`). Cloudflare est relié à ce dépôt GitHub : chaque envoi sur la branche `main` lance `npm run build` puis `npx wrangler deploy`, et le site est en ligne une minute plus tard.
 
-Adresse de travail : https://kausar.thierry-lechanteur.workers.dev, en attendant le domaine kausar.be.
+Le site est servi sur https://www.kausar.be ; kausar.be redirige vers www (règle de redirection de la zone Cloudflare).
 
 `public/_headers` fixe les en-têtes de sécurité et le cache long des fichiers de `/_astro`.
 

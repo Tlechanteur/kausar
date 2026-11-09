@@ -3,8 +3,8 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "kausar",
   "compatibility_date": "2026-10-01",
-  // Adresse de travail kausar.<compte>.workers.dev, en attendant le domaine kausar.be
-  "workers_dev": true,
+  // Pas de copie publique sur *.workers.dev (contenu en double pour Google) : le site est servi sur kausar.be et www.kausar.be
+  "workers_dev": false,
   "preview_urls": false,
   "assets": {
     "directory": "./dist"
