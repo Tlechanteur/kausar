@@ -58,7 +58,7 @@ const schema = {
         {m.email && <><dt>E-mail</dt><dd><a href={`mailto:${m.email}`}>{m.email}</a></dd></>}
         {m.web && <><dt>Site</dt><dd><a href={m.web}>{m.web.replace('https://', '')}</a></dd></>}
       </dl>
-      <p class="fiche__actions">
+      <p class="mag-actions">
         <a class="btn btn--rouge" href={itineraire(m)}>Itinéraire</a>
         <a class="btn btn--creux" href={`tel:${m.telHref}`}>Appeler</a>
       </p>

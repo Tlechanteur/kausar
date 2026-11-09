@@ -159,44 +159,25 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .visite__note { position: absolute; left: 0; right: 0; bottom: 1rem; text-align: center; color: var(--blanc-doux); font-size: 0.875rem; padding-inline: 1rem; }
 .visite iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* ---------- page Contact : les grandes fiches ---------- */
+/* ---------- page Nos magasins : une carte compacte par magasin ---------- */
 .page-tete { padding-block: clamp(2.5rem, 5vw, 4rem) 1rem; }
 .page-tete h1 { font-size: clamp(2.75rem, 5.5vw, 4.5rem); line-height: 1; letter-spacing: -0.035em; }
 .page-tete p { font-size: 1.2rem; color: var(--doux); margin-top: 1rem; max-width: 46ch; }
-.raccourcis { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.75rem 0 0; padding: 0; }
-.raccourcis a { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 1rem; border: 1px solid var(--trait); border-radius: 999px; text-decoration: none; color: var(--marine); font-weight: 500; transition: border-color 0.2s, background-color 0.2s; }
-.raccourcis a:hover { border-color: var(--marine); background: var(--fond); }
-.raccourcis .sq { width: 0.6rem; height: 0.6rem; }
-.fiches { display: grid; gap: clamp(2rem, 4vw, 3rem); padding-block: 2rem clamp(3rem, 7vw, 6rem); }
-.fiche { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); border: 1px solid var(--trait); border-top: 6px solid var(--c); border-radius: var(--r); overflow: hidden; background: var(--blanc); }
-.fiche:nth-child(even) .galerie { order: 2; }
-.fiche:target { animation: cible 1.6s var(--ease); }
-@keyframes cible { 0%, 30% { box-shadow: 0 0 0 6px var(--c); } 100% { box-shadow: 0 0 0 0 transparent; } }
-.galerie { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem; background: var(--fond); }
-.galerie__grande { position: relative; aspect-ratio: 3 / 2; border-radius: calc(var(--r) - 0.25rem); overflow: hidden; }
-.galerie__grande img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s var(--ease), transform 0.8s var(--ease); }
-html:not(.js) .galerie__grande img:not(:first-child) { display: none; }
-.js .galerie__grande img:not(.is-on) { opacity: 0; transform: scale(1.04); }
-.galerie__vignettes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
-.galerie__vignettes button { all: unset; box-sizing: border-box; cursor: pointer; aspect-ratio: 3 / 2; border-radius: 0.4rem; overflow: hidden; outline: 3px solid transparent; outline-offset: -3px; transition: opacity 0.2s; opacity: 0.7; }
-.galerie__vignettes button:hover { opacity: 1; }
-.galerie__vignettes button[aria-pressed='true'] { outline-color: var(--c); opacity: 1; }
-.galerie__vignettes button:focus-visible { outline: 3px solid var(--ciel); opacity: 1; }
-.galerie__vignettes img { width: 100%; height: 100%; object-fit: cover; }
-.fiche__infos { padding: clamp(1.5rem, 3vw, 2.5rem); display: flex; flex-direction: column; gap: 1.1rem; align-items: flex-start; }
-.fiche__infos h2 img { width: 240px; }
-.fiche__infos .etat { display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; }
-.fiche__infos .etat::before { content: ''; width: 0.7rem; height: 0.7rem; background: var(--c); }
-.fiche__infos .etat:not(.is-open)::before { background: var(--trait); }
-.fiche dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.45rem 1.25rem; margin: 0; }
-.fiche dt { color: var(--doux); }
-.fiche dd { margin: 0; font-weight: 500; }
-.fiche dd a { color: var(--marine); font-weight: 600; }
-.fiche__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: auto; padding-top: 0.5rem; }
-.fiche--pro { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-.fiche--pro .fiche__marque { display: grid; place-items: center; gap: 1rem; padding: 2.5rem; background: var(--fond); text-align: center; }
-.fiche--pro .fiche__marque img { width: min(100%, 320px); }
-.fiche--pro .fiche__marque p { color: var(--doux); font-weight: 600; }
+.page-tete [data-maintenant] { color: var(--doux); }
+.cartes { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; padding-block: 1.5rem clamp(3rem, 7vw, 6rem); margin-block: 0; padding-inline: 0; }
+.cartes > li { display: flex; }
+.carte { flex: 1; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid var(--trait); border-top: 5px solid var(--c); border-radius: var(--r); background: var(--blanc); color: var(--texte); text-decoration: none; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s; }
+.carte:hover { transform: translateY(-3px); box-shadow: 0 12px 30px var(--ombre); }
+.cartes > li:target .carte { animation: cible 1.6s var(--ease); }
+@keyframes cible { 0%, 30% { box-shadow: 0 0 0 5px var(--c); } 100% { box-shadow: 0 0 0 0 transparent; } }
+.carte__photo { aspect-ratio: 1; border-radius: calc(var(--r) - 0.25rem); overflow: hidden; background: var(--fond); }
+.carte__photo img { width: 100%; height: 100%; object-fit: cover; }
+.carte__corps { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.carte h2 { font-size: 1.15rem; letter-spacing: -0.01em; line-height: 1.15; }
+.carte:hover h2 { text-decoration: underline; text-decoration-color: var(--c); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.carte__adresse { color: var(--doux); font-size: 0.9375rem; }
+.carte .etat { font-size: 0.9375rem; }
+.mag-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; padding-top: 0.5rem; }
 
 /* ---------- page d'un magasin ---------- */
 .mag-tete { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem); }
@@ -270,15 +251,15 @@ html:not(.js) .galerie__grande img:not(:first-child) { display: none; }
 @media (max-width: 60rem) {
   .hero, .apropos { grid-template-columns: minmax(0, 1fr); }
   .chiffres__in { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .fiche, .fiche--pro { grid-template-columns: minmax(0, 1fr); }
-  .fiche:nth-child(even) .galerie { order: 0; }
+  .cartes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pied__in { grid-template-columns: minmax(0, 1fr); }
   .visite { aspect-ratio: 4 / 3; }
   .mag-tete, .mag-corps { grid-template-columns: minmax(0, 1fr); }
   .mag-tete__photo, .mag-tete__marque { order: -1; }
 }
 @media (max-width: 40rem) {
-  .photos { grid-template-columns: minmax(0, 1fr); }
+  .photos, .cartes { grid-template-columns: minmax(0, 1fr); }
+  .carte { grid-template-columns: 5.5rem minmax(0, 1fr); }
 }
 @media (max-width: 30rem) {
   .nav { gap: 1rem; }
