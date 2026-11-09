@@ -65,4 +65,4 @@ Pour une mise en ligne dans un sous-dossier ailleurs, deux variables d'environne
 
 ---
 
-Photos et site : [lechanteur.be](https://www.lechanteur.be) pour Alchimie sprl.
+Photos et site : [lechanteur.be](https://www.lechanteur.be) pour Alchimie srl.
