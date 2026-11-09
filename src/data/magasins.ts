@@ -39,6 +39,14 @@ export interface Photo {
 
 export interface Magasin {
   slug: string;
+  /** L'adresse de la page du magasin : celle de l'ancien site WordPress, pour garder les liens et Google. */
+  page: string;
+  /** Le texte de la page du magasin, repris de l'ancien site et resserré. */
+  texte: string[];
+  /** Les rayons, en étiquettes sur la page du magasin. */
+  rayons?: string[];
+  /** Le lien d'intégration Google Street View de la visite virtuelle, s'il y en a une. */
+  visite?: string;
   nom: string;
   /** Le nom court, dans la liste de l'accueil. */
   enseigne: string;
@@ -69,9 +77,25 @@ const septJours = (o: number, f: number, we = f): Plage[] => [
   [o, we], [o, f], [o, f], [o, f], [o, f], [o, f], [o, we],
 ];
 
+// le texte commun aux trois Ethnic et Exotic Market, repris de leurs anciennes pages
+const texteMarket = (ou: string) => [
+  `Un vrai supermarché de proximité ${ou} : des produits d’Afrique et d’Asie (Inde, Pakistan, Bangladesh, Sri Lanka), et tous les produits de consommation courante.`,
+  'Dès l’entrée, les fruits et légumes frais : bananes, agrumes, grenades, figues, avocats, gingembre, poivrons, poireaux… Plus loin, les épices, les huiles, le riz et la semoule, des plats préparés et des poissons surgelés, et un grand choix de boissons.',
+  'Et les meilleures marques de cosmétiques, de soins pour la peau et les cheveux, des mèches et des perruques. Les cartes téléphoniques sont au comptoir.',
+];
+const rayonsMarket = ['Fruits et légumes', 'Épices, riz et semoule', 'Surgelés', 'Boissons', 'Cosmétiques et soins', 'Mèches et perruques', 'Produits ménagers', 'Cartes téléphoniques'];
+
 export const magasins: Magasin[] = [
   {
     slug: 'coronmeuse',
+    page: 'ethnic-supermarket',
+    texte: [
+      'Avec ses 900 m², le Kausar Ethnic Supermarket est le plus grand magasin Kausar de Liège : le plus vaste choix de produits d’Afrique et d’Asie (Inde, Pakistan, Bangladesh, Sri Lanka), et tous les produits de consommation courante.',
+      'Au rayon fruits et légumes, faites le plein de soleil : agrumes, bananes plantain, noix de coco, patates douces, gingembre, gombo, pili-pili. Riz, pâtes, épices, bouillons, semoules, huiles et sauces pour vos préparations, et au rayon surgelés, des produits parmi les plus rares en Europe.',
+      'Côté beauté, les nouveautés et les nouvelles marques : soins du corps, crèmes et huiles pour tous les types de peau, shampoings et soins pour les cheveux. Et tout pour l’entretien de la maison.',
+    ],
+    rayons: ['Fruits et légumes', 'Riz, épices et sauces', 'Surgelés rares', 'Boissons', 'Cosmétiques et soins', 'Entretien de la maison'],
+    visite: 'https://www.google.com/maps/embed?pb=!4v1794242536862!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJQ0UtcWJCSkE.!2m2!1d50.65221724117803!2d5.604085754931399!3f282.53659767950313!4f-11.194089771591337!5f0.7820865974627469',
     nom: 'Kausar Ethnic Supermarket',
     enseigne: 'Ethnic Supermarket',
     sousTitre: '900 m², le plus grand',
@@ -94,6 +118,9 @@ export const magasins: Magasin[] = [
   },
   {
     slug: 'cathedrale',
+    page: 'kausar-ethnic-market-cathedrale',
+    texte: texteMarket('en plein centre de Liège, rue de la Cathédrale'),
+    rayons: rayonsMarket,
     nom: 'Kausar Ethnic Market Cathédrale',
     enseigne: 'Ethnic Market Cathédrale',
     sousTitre: 'Fruits et légumes frais',
@@ -117,6 +144,9 @@ export const magasins: Magasin[] = [
   },
   {
     slug: 'place-du-marche',
+    page: 'ethnic-market',
+    texte: texteMarket('sur la place du Marché, au cœur de Liège'),
+    rayons: rayonsMarket,
     nom: 'Kausar Ethnic Market Place du Marché',
     enseigne: 'Ethnic Market Place du Marché',
     sousTitre: 'Mèches, perruques, cosmétiques',
@@ -140,6 +170,13 @@ export const magasins: Magasin[] = [
   },
   {
     slug: 'librairie',
+    page: 'librairie-market',
+    texte: [
+      'La librairie du coin et le magasin d’alimentation réunis, en plein centre de Liège, sur la place du Marché.',
+      'Au rayon presse, les quotidiens (La Meuse, La DH, Le Soir, La Libre Belgique) et toute la presse belge et étrangère : magazines, programmes télé, lectures pour enfants, jeux et passe-temps.',
+      'Pour les petits creux : pâtes, riz, plats préparés, pain, fruits, pizzas, glaces et confiseries, boissons, bières et vins. Le tabac au comptoir et, au fond du magasin, un espace droguerie : beauté, hygiène et entretien.',
+    ],
+    rayons: ['Presse belge et étrangère', 'Loterie Nationale', 'Photocopies', 'Cartes téléphoniques', 'Alimentation', 'Boissons', 'Tabac', 'Droguerie'],
     nom: 'Kausar Librairie Market',
     enseigne: 'Librairie Market',
     sousTitre: 'Presse et loterie, ouvert tard',
@@ -162,6 +199,10 @@ export const magasins: Magasin[] = [
   },
   {
     slug: 'verviers',
+    page: 'kausar-exotic-market-verviers',
+    texte: texteMarket('à Verviers, rue de l’Harmonie'),
+    rayons: rayonsMarket,
+    visite: 'https://www.google.com/maps/embed?pb=!4v1610107510444!6m8!1m7!1sCAoSLEFGMVFpcE40clFBTzRWNTMzV3U0U29xY2VBMmJMTHBMYlBRSFA0VmVWUEJv!2m2!1d50.5920348993238!2d5.856423205847332!3f40!4f0!5f0.7820865974627469',
     nom: 'Kausar Exotic Market Verviers',
     enseigne: 'Exotic Market Verviers',
     sousTitre: 'Fermé le dimanche',
@@ -185,6 +226,11 @@ export const magasins: Magasin[] = [
   },
   {
     slug: 'exotic-city',
+    page: 'exotic-city',
+    texte: [
+      'Exotic City, c’est Kausar pour les professionnels : des produits africains et asiatiques exclusifs, hors du centre-ville, à Alleur.',
+      'Pour les horaires, les conditions et les commandes, contactez Exotic City par téléphone ou par e-mail, ou rendez-vous sur son site.',
+    ],
     nom: 'Exotic City',
     enseigne: 'Exotic City',
     sousTitre: 'Pour les professionnels',
@@ -206,4 +252,12 @@ export const magasins: Magasin[] = [
 export const itineraire = (m: Magasin) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${m.nom}, ${m.rue}, ${m.ville}, Belgique`)}`;
 
-export const facebook = 'https://www.facebook.com/KausarCity/';
+/** Une heure en toutes lettres : 9 → « 9h », 24 → « minuit », 26 → « 2h ». */
+export const heure = (h: number) => {
+  const v = h % 24, m = Math.round((v % 1) * 60);
+  return v === 0 ? 'minuit' : `${Math.floor(v)}h${m ? String(m).padStart(2, '0') : ''}`;
+};
+
+export const jours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+export const facebook ='https://www.facebook.com/KausarCity/';

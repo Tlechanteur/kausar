@@ -11,13 +11,9 @@ const b = base.replace(/\/$/, '');
 export default defineConfig({
   site,
   base,
-  // les anciennes adresses de l'ancien site WordPress pointent vers la fiche du magasin, page Contact
+  // les pages magasins gardent les adresses de l'ancien site WordPress (src/pages/[page].astro) ;
+  // les autres anciennes pages renvoient vers l'accueil
   redirects: {
-    '/ethnic-supermarket': `${b}/contact#coronmeuse`,
-    '/kausar-ethnic-market-cathedrale': `${b}/contact#cathedrale`,
-    '/ethnic-market': `${b}/contact#place-du-marche`,
-    '/librairie-market': `${b}/contact#librairie`,
-    '/kausar-exotic-market-verviers': `${b}/contact#verviers`,
     '/promotions': `${b}/`,
     '/news': `${b}/`,
     '/politique-de-cookies-ue': `${b}/`,

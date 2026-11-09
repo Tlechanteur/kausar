@@ -198,6 +198,47 @@ html:not(.js) .galerie__grande img:not(:first-child) { display: none; }
 .fiche--pro .fiche__marque img { width: min(100%, 320px); }
 .fiche--pro .fiche__marque p { color: var(--doux); font-weight: 600; }
 
+/* ---------- page d'un magasin ---------- */
+.mag-tete { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem); }
+.mag-tete__txt { display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; }
+.mag-tete__logo { width: 220px; }
+.mag-tete h1 { font-size: clamp(2.5rem, 5vw, 4.25rem); line-height: 1; letter-spacing: -0.035em; margin-top: 0.25rem; }
+.mag-tete__sous { font-size: 1.2rem; color: var(--doux); margin-top: -0.4rem; }
+.mag-etat { display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; }
+.mag-etat::before { content: ''; width: 0.7rem; height: 0.7rem; background: var(--c); }
+.mag-etat:not(.is-open)::before { background: var(--trait); }
+.coord { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.45rem 1.25rem; margin: 0; }
+.coord dt { color: var(--doux); }
+.coord dd { margin: 0; font-weight: 500; }
+.coord dd a { color: var(--marine); font-weight: 600; }
+.mag-tete__photo { margin: 0; aspect-ratio: 4 / 3; border-radius: calc(var(--r) * 1.5); overflow: hidden; border-top: 8px solid var(--c); animation: monte 0.9s var(--ease) both 0.1s; }
+.mag-tete__photo img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes monte { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+.mag-tete__marque { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 3rem; background: var(--fond); border-radius: calc(var(--r) * 1.5); border-top: 8px solid var(--c); }
+.mag-tete__marque img { width: min(100%, 360px); mix-blend-mode: multiply; }
+
+.mag-corps { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.mag-corps--seul { grid-template-columns: minmax(0, 1fr); }
+.mag-texte p { font-size: 1.15rem; margin-top: 1.25rem; max-width: 60ch; }
+.rayons { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0 0; padding: 0; }
+.rayons li { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 2.5rem; padding: 0 1rem; background: var(--blanc); border-radius: 999px; font-weight: 500; color: var(--marine); }
+.rayons .sq { width: 0.55rem; height: 0.55rem; }
+.horaires { background: var(--blanc); border-radius: calc(var(--r) * 1.5); border-top: 6px solid var(--c); padding: clamp(1.5rem, 3vw, 2.25rem); }
+.horaires h2 { font-size: clamp(1.6rem, 2.6vw, 2rem); margin-bottom: 1rem; }
+.horaires table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.horaires th, .horaires td { padding: 0.6rem 0.25rem; border-bottom: 1px solid var(--trait); text-align: left; font-weight: 400; }
+.horaires td { text-align: right; font-weight: 500; }
+.horaires tr.is-today th, .horaires tr.is-today td { font-weight: 700; color: var(--marine); }
+.horaires tr.is-today th::before { content: ''; display: inline-block; width: 0.6rem; height: 0.6rem; margin-right: 0.5rem; background: var(--c); }
+.horaires__note { margin-top: 1rem; color: var(--doux); font-size: 0.9375rem; }
+
+.mag-h2 { margin-bottom: 2rem; }
+.photos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 0.75rem; }
+.photos li { aspect-ratio: 4 / 3; border-radius: var(--r); overflow: hidden; }
+.photos img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+.photos li:hover img { transform: scale(1.04); }
+.section--colle { padding-top: 0; }
+
 /* ---------- pied de page : bleu clair, le logo couleur fondu par mode produit (son blanc prend le ton du fond) ---------- */
 .pied { background: var(--fond); border-top: 1px solid var(--trait); margin-top: clamp(3rem, 6vw, 5rem); }
 .pied__in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr); gap: 2rem 3rem; padding-block: 3rem; }
@@ -233,12 +274,19 @@ html:not(.js) .galerie__grande img:not(:first-child) { display: none; }
   .fiche:nth-child(even) .galerie { order: 0; }
   .pied__in { grid-template-columns: minmax(0, 1fr); }
   .visite { aspect-ratio: 4 / 3; }
+  .mag-tete, .mag-corps { grid-template-columns: minmax(0, 1fr); }
+  .mag-tete__photo, .mag-tete__marque { order: -1; }
+}
+@media (max-width: 40rem) {
+  .photos { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 30rem) {
   .nav { gap: 1rem; }
   .nav__logo img { width: 140px; }
   .nav > .btn { display: none; }
   .defile__piste li { width: 8.5rem; }
+  .ligne { grid-template-columns: 1rem minmax(0, 1fr); grid-template-areas: 'sq nom' '. adr' '. hrs' '. etat' '. btn'; }
+  .ligne .btn { justify-self: start; margin-top: 0.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

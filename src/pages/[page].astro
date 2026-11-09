@@ -1,0 +1,144 @@
+---
+/**
+ * La page d'un magasin, à l'adresse de l'ancien site WordPress (/ethnic-market/, /ethnic-supermarket/…).
+ * Haut : logo, nom, état en direct, coordonnées et grande photo. Puis les rayons et les horaires,
+ * les photos, la visite virtuelle quand il y en a une, et les autres magasins.
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ListeMagasins from '../components/ListeMagasins.astro';
+import Visite from '../components/Visite.astro';
+import { magasins, itineraire, heure, jours, type Magasin } from '../data/magasins';
+
+export function getStaticPaths() {
+  return magasins.map((m) => ({ params: { page: m.page }, props: { m } }));
+}
+
+const { m } = Astro.props as { m: Magasin };
+const [une, ...autresPhotos] = m.photos;
+const autres = magasins.filter((x) => x.slug !== m.slug);
+const ordre = [1, 2, 3, 4, 5, 6, 0]; // la semaine commence le lundi
+const ville = m.ville.replace(/^\d+ /, '');
+
+// les données structurées pour Google : adresse, téléphone, horaires
+const hh = (h: number) => (h >= 24 ? (h === 24 ? '23:59' : `${String(h - 24).padStart(2, '0')}:00`) : `${String(Math.floor(h)).padStart(2, '0')}:${String(Math.round((h % 1) * 60)).padStart(2, '0')}`);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': m.slug === 'librairie' ? 'Store' : 'GroceryStore',
+  name: m.nom,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  telephone: m.telHref,
+  ...(m.email && { email: m.email }),
+  address: { '@type': 'PostalAddress', streetAddress: m.rue, postalCode: m.ville.split(' ')[0], addressLocality: ville, addressCountry: 'BE' },
+  ...(m.semaine && {
+    openingHoursSpecification: m.semaine.flatMap((p, d) => p ? [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: `https://schema.org/${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d]}`,
+      opens: hh(p[0]), closes: hh(p[1]),
+    }] : []),
+  }),
+};
+---
+<Base
+  title={`${m.nom} | ${m.rue}, ${ville}`}
+  description={`${m.nom}, ${m.rue} à ${ville}. ${m.horaires ? `${m.horaires}. ` : ''}${m.description}`}
+  page="contact"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(schema)} />
+
+  <section class="wrap mag-tete" style={`--c:${m.couleur}`} data-slug={m.semaine ? m.slug : undefined} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined}>
+    <div class="mag-tete__txt">
+      {une && <Image src={m.logo} alt="" width={240} densities={[1, 2]} loading="eager" class="mag-tete__logo" />}
+      <h1>{m.enseigne}</h1>
+      <p class="mag-tete__sous">{m.sousTitre}</p>
+      {m.semaine && <p class="etat mag-etat" data-etat={m.slug}>{m.horairesCourt}</p>}
+      <dl class="coord">
+        <dt>Adresse</dt><dd>{m.rue}, {m.ville}</dd>
+        <dt>Téléphone</dt><dd><a href={`tel:${m.telHref}`}>{m.tel}</a></dd>
+        {m.email && <><dt>E-mail</dt><dd><a href={`mailto:${m.email}`}>{m.email}</a></dd></>}
+        {m.web && <><dt>Site</dt><dd><a href={m.web}>{m.web.replace('https://', '')}</a></dd></>}
+      </dl>
+      <p class="fiche__actions">
+        <a class="btn btn--rouge" href={itineraire(m)}>Itinéraire</a>
+        <a class="btn btn--creux" href={`tel:${m.telHref}`}>Appeler</a>
+      </p>
+    </div>
+    {une ? (
+      <figure class="mag-tete__photo">
+        <Image src={une.src} alt={une.alt} widths={[640, 1000, 1400]} sizes="(min-width: 76rem) 42rem, (min-width: 60rem) 55vw, 100vw" width={1400} loading="eager" style={une.pos ? `object-position:${une.pos}` : undefined} />
+      </figure>
+    ) : (
+      <div class="mag-tete__marque"><Image src={m.logo} alt="" width={360} densities={[1, 2]} loading="eager" /></div>
+    )}
+  </section>
+
+  <section class="section section--fond">
+    <div class:list={['wrap', 'mag-corps', { 'mag-corps--seul': !m.semaine }]} style={`--c:${m.couleur}`}>
+      <div class="mag-texte" data-reveal>
+        <h2>{m.rayons ? 'Dans nos rayons' : 'Le magasin des pros'}</h2>
+        {m.texte.map((p) => <p>{p}</p>)}
+        {m.rayons && (
+          <ul class="rayons" role="list">
+            {m.rayons.map((r) => <li><span class="sq" aria-hidden="true"></span>{r}</li>)}
+          </ul>
+        )}
+      </div>
+      {m.semaine && (
+        <aside class="horaires" data-reveal style="--i:1" aria-labelledby="horaires-titre">
+          <h2 id="horaires-titre">Horaires</h2>
+          <table>
+            <tbody>
+              {ordre.map((d) => {
+                const p = m.semaine![d];
+                return (
+                  <tr data-jour={d}>
+                    <th scope="row">{jours[d]}</th>
+                    <td>{p ? `${heure(p[0])} à ${heure(p[1])}` : 'Fermé'}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <p class="horaires__note">{m.horaires}.</p>
+        </aside>
+      )}
+    </div>
+  </section>
+
+  {autresPhotos.length > 0 && (
+    <section class="section" aria-labelledby="photos-titre">
+      <div class="wrap">
+        <h2 id="photos-titre" class="mag-h2">Le magasin en images</h2>
+        <ul class="photos" role="list" style={`--n:${autresPhotos.length}`}>
+          {autresPhotos.map((p, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <Image src={p.src} alt={p.alt} widths={[480, 800, 1000]} sizes={`(min-width: 76rem) ${Math.round(76 / autresPhotos.length)}rem, (min-width: 40rem) ${Math.round(100 / autresPhotos.length)}vw, 100vw`} width={1000} style={p.pos ? `object-position:${p.pos}` : undefined} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {m.visite && (
+    <section class:list={['section', { 'section--colle': autresPhotos.length > 0 }]} aria-labelledby="visite-titre">
+      <div class="wrap">
+        <div class="titre">
+          <h2 id="visite-titre">Entrez, c’est ouvert</h2>
+          <p>Faites le tour du magasin sur Google Street View.</p>
+        </div>
+        <Visite url={m.visite} photo={(autresPhotos[0] ?? une).src} titre={`Visite virtuelle du ${m.nom}, ${m.rue}, sur Google Street View`} />
+      </div>
+    </section>
+  )}
+
+  <section class="section section--fond" aria-labelledby="autres-titre">
+    <div class="wrap">
+      <div class="titre">
+        <h2 id="autres-titre">Nos autres magasins</h2>
+        <p data-maintenant>Liège, Verviers et Alleur.</p>
+      </div>
+      <ListeMagasins liste={autres} />
+    </div>
+  </section>
+</Base>

@@ -39,6 +39,11 @@ export function etats() {
       e.classList.toggle('is-closed', !ouvert);
     });
   });
+  // le jour d'aujourd'hui, dans le tableau des horaires d'une page magasin
+  document.querySelectorAll<HTMLElement>(`[data-jour="${jour}"]`).forEach((tr) => {
+    tr.classList.add('is-today');
+    tr.querySelector('th')?.insertAdjacentHTML('beforeend', '<span class="sr-only"> (aujourd’hui)</span>');
+  });
   document.querySelectorAll<HTMLElement>('[data-maintenant]').forEach((now) => {
     now.textContent = ouverts === 0 ? 'À cette heure-ci, nos magasins sont fermés.'
       : ouverts === 1 ? 'En ce moment, 1 magasin est ouvert.'

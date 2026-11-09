@@ -15,16 +15,35 @@ Site statique fait avec [Astro](https://astro.build), sans base de données ni C
   - le renvoi vers les promotions sur Facebook ;
   - la visite virtuelle Google Street View, chargée seulement au clic.
 - **Nos magasins** (`src/pages/contact.astro`) : une fiche par magasin, avec photos, horaires, téléphone et itinéraire.
+- **Une page par magasin** (`src/pages/[page].astro`), aux adresses de l'ancien site :
 
-Les anciennes adresses du site WordPress (`/ethnic-supermarket`, `/promotions`, etc.) redirigent vers les nouvelles pages (`astro.config.mjs`).
+  | Magasin | Adresse de la page |
+  |---|---|
+  | Ethnic Supermarket | `/ethnic-supermarket/` |
+  | Ethnic Market Cathédrale | `/kausar-ethnic-market-cathedrale/` |
+  | Ethnic Market Place du Marché | `/ethnic-market/` |
+  | Librairie Market | `/librairie-market/` |
+  | Exotic Market Verviers | `/kausar-exotic-market-verviers/` |
+  | Exotic City | `/exotic-city/` |
+
+  Chaque page contient :
+  - le logo, l'état ouvert ou fermé en direct, les coordonnées et une grande photo ;
+  - le texte et les rayons ;
+  - les horaires jour par jour, avec le jour même mis en avant ;
+  - les photos ;
+  - la visite virtuelle, quand le magasin en a une ;
+  - les autres magasins.
+
+Les autres anciennes adresses (`/promotions`, `/news`, `/politique-de-cookies-ue`) redirigent vers l'accueil (`astro.config.mjs`).
 
 ## Modifier le contenu
 
 | Quoi | Où |
 |---|---|
-| Magasins : adresses, horaires, téléphones, photos, logos | `src/data/magasins.ts` |
+| Magasins : adresses, horaires, téléphones, photos, logos, texte et rayons de leur page | `src/data/magasins.ts` |
+| Visite virtuelle d'un magasin | `src/data/magasins.ts`, champ `visite` : le lien `src` du code d'intégration Google Maps |
 | Lien Facebook (promotions) | `src/data/magasins.ts`, constante `facebook` |
-| Textes de l'accueil, marques, visite virtuelle | `src/pages/index.astro` |
+| Textes de l'accueil, marques | `src/pages/index.astro` |
 | En-tête, menu, pied de page | `src/layouts/Base.astro` |
 | Couleurs, typographie, mise en page | `src/styles/kausar.css` |
 | État ouvert ou fermé, apparitions, compteurs | `src/scripts/vivant.ts` |

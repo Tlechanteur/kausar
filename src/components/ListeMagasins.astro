@@ -1,0 +1,25 @@
+---
+/** La liste courte des magasins : nom, adresse, horaires, état en direct et lien vers la page du magasin. */
+import type { Magasin } from '../data/magasins';
+import { lien } from '../lib/lien';
+
+interface Props {
+  liste: Magasin[];
+}
+const { liste } = Astro.props;
+---
+<ul class="liste" role="list">
+  {liste.map((m, i) => (
+    <li class:list={['ligne', { 'ligne--pro': m.pro }]} style={`--c:${m.couleur}; --i:${i}`} data-reveal data-slug={m.semaine ? m.slug : undefined} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined}>
+      <span class="sq" aria-hidden="true"></span>
+      <div class="ligne__nom">
+        <h3>{m.enseigne}</h3>
+        <p class="ligne__sous">{m.sousTitre}</p>
+      </div>
+      <p class="ligne__adresse">{m.rue}, {m.ville.replace(/^\d+ /, '')}</p>
+      <p class="ligne__heures">{m.horairesCourt ?? <a href={`tel:${m.telHref}`}>{m.tel}</a>}</p>
+      <p class="etat" data-etat={m.semaine ? m.slug : undefined}>{m.semaine ? '' : 'Hors centre-ville'}</p>
+      <a class="btn btn--creux btn--petit" href={lien(`/${m.page}/`)} aria-label={`Voir le magasin ${m.nom}`}>Voir le magasin</a>
+    </li>
+  ))}
+</ul>

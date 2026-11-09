@@ -30,6 +30,7 @@ const liens = [
     <link rel="icon" href={lien('/logoicon64.jpg')} type="image/jpeg" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <style is:global>html, body { overflow-x: clip; }</style>
+    <slot name="head" />
   </head>
   <body>
     <a class="skip" href="#main">Aller au contenu</a>
@@ -71,8 +72,8 @@ const liens = [
         <div>
           <h2>Nous contacter</h2>
           <ul>
-            <li><a href={lien('/contact#coronmeuse')}>Ethnic Supermarket</a></li>
-            <li><a href={lien('/contact#exotic-city')}>Exotic City, pour les pros</a></li>
+            <li><a href={lien('/ethnic-supermarket/')}>Ethnic Supermarket</a></li>
+            <li><a href={lien('/exotic-city/')}>Exotic City, pour les pros</a></li>
             <li><a href={facebook}>Kausar sur Facebook</a></li>
           </ul>
         </div>
