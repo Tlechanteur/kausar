@@ -177,6 +177,7 @@ export const magasins: Magasin[] = [
       'Pour les petits creux : pâtes, riz, plats préparés, pain, fruits, pizzas, glaces et confiseries, boissons, bières et vins. Le tabac au comptoir et, au fond du magasin, un espace droguerie : beauté, hygiène et entretien.',
     ],
     rayons: ['Presse belge et étrangère', 'Loterie Nationale', 'Photocopies', 'Cartes téléphoniques', 'Alimentation', 'Boissons', 'Tabac', 'Droguerie'],
+    visite: 'https://www.google.com/maps/embed?pb=!4v1794263831636!6m8!1m7!1sCAoSLEFGMVFpcFBsXzBJU2llZTlZMG1CSEg5ZTNMNzdfV2JDeXMwc0x0ZDNhbkNw!2m2!1d50.64560990443707!2d5.576285088218727!3f45.27!4f-10!5f0.8160813932612223',
     nom: 'Kausar Librairie Market',
     enseigne: 'Librairie Market',
     sousTitre: 'Presse et loterie, ouvert tard',
