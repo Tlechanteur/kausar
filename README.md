@@ -49,15 +49,19 @@ Il faut Node 22 ou plus récent.
 |---|---|
 | `npm install` | installe les dépendances |
 | `npm run dev` | serveur local sur `http://localhost:4321` |
-| `npm run build` | compile le site pour www.kausar.be dans `dist/` |
+| `npm run build` | compile le site pour www.kausar.be dans `dist/` (c'est ce que fait Cloudflare) |
 | `npm run build:test` | compile la version de test pour `test.lechanteur.be/kausar` dans `dist-test/` |
 | `npm run preview` | affiche le site compilé |
 
 ## Mise en ligne
 
-Le site compilé est un dossier de fichiers statiques. On copie le contenu de `dist/` (ou `dist-test/`) sur l'hébergement OVH. Le fichier `public/.htaccess` est inclus automatiquement : il règle le cache et désactive la liste des fichiers.
+Le site est hébergé sur Cloudflare Workers (fichiers statiques), dans le Worker `kausar` (`wrangler.jsonc`). Cloudflare est relié à ce dépôt GitHub : chaque envoi sur la branche `main` lance `npm run build` puis `npx wrangler deploy`, et le site est en ligne une minute plus tard.
 
-Pour une mise en ligne dans un sous-dossier, deux variables d'environnement changent la base des liens : `KAUSAR_SITE` et `KAUSAR_BASE`. Voir le script `build:test` dans `package.json`.
+Adresse de travail : https://kausar.thierry-lechanteur.workers.dev, en attendant le domaine kausar.be.
+
+`public/_headers` fixe les en-têtes de sécurité et le cache long des fichiers de `/_astro`.
+
+Pour une mise en ligne dans un sous-dossier ailleurs, deux variables d'environnement changent la base des liens : `KAUSAR_SITE` et `KAUSAR_BASE`. Voir le script `build:test` dans `package.json`.
 
 ---
 

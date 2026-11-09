@@ -1,0 +1,12 @@
+{
+  // Déploiement Cloudflare Workers : les fichiers statiques générés par Astro
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "kausar",
+  "compatibility_date": "2026-10-01",
+  // Adresse de travail kausar.<compte>.workers.dev, en attendant le domaine kausar.be
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist"
+  }
+}
