@@ -23,7 +23,7 @@ import { lien } from '../lib/lien';
       <li id={m.slug} style={`--c:${m.couleur}; --i:${i % 3}`} data-reveal data-slug={m.semaine ? m.slug : undefined} data-semaine={m.semaine ? JSON.stringify(m.semaine) : undefined}>
         <a class="carte" href={lien(`/${m.page}/`)}>
           <span class="carte__photo">
-            <Image src={m.photos[0].src} alt="" widths={[400, 640]} sizes="(min-width: 76rem) 24rem, (min-width: 40rem) 46vw, 92vw" width={640} style={m.photos[0].pos ? `object-position:${m.photos[0].pos}` : undefined} loading={i < 3 ? 'eager' : 'lazy'} />
+            <Image src={m.photos[0].src} alt="" widths={[400, 640]} sizes="(min-width: 76rem) 24rem, (min-width: 60rem) 31vw, 48vw" width={640} style={m.photos[0].pos ? `object-position:${m.photos[0].pos}` : undefined} loading={i < 3 ? 'eager' : 'lazy'} />
           </span>
           <span class="carte__corps">
             <h2>{m.enseigne}</h2>
