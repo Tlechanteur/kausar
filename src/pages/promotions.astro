@@ -1,17 +1,18 @@
 ---
 /**
- * Promotions : les promos sont publiées chaque semaine sur Facebook.
- * La page explique où les trouver, renvoie vers Facebook dans un nouvel onglet
- * et peut afficher le fil Facebook sur place (chargé au clic).
+ * Promotions : les promos sont publiées sur la page Facebook de Kausar.
+ * La page explique où les trouver et renvoie vers Facebook dans un nouvel onglet.
+ * (Le module « Page » de Facebook a été essayé : il n'affiche plus les publications, même connecté.)
  */
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import FacebookFil from '../components/FacebookFil.astro';
 import { facebook } from '../data/magasins';
 import { lien } from '../lib/lien';
+import fruits from '../assets/photos/fruits02slb.jpg';
 ---
 <Base
   title="Promotions et nouveautés | Kausar Liège, Verviers et Alleur"
-  description="Les promotions de la semaine, les nouveautés et les arrivages des magasins Kausar, publiés sur la page Facebook de Kausar."
+  description="Les promotions, les nouveaux produits et les nouvelles références des magasins Kausar, publiés sur la page Facebook de Kausar."
   page="promotions"
 >
   <section class="wrap promos">
@@ -28,6 +29,12 @@ import { lien } from '../lib/lien';
         <li><span class="sq" aria-hidden="true" style="--c: var(--ciel)"></span>Abonnez-vous à la page pour les voir dès leur parution.</li>
       </ul>
     </div>
-    <FacebookFil page={facebook} />
+    <a class="fbcarte" href={facebook} target="_blank" rel="noopener">
+      <Image src={fruits} alt="" widths={[500, 800, 1000]} sizes="(min-width: 60rem) 32rem, 100vw" width={1000} loading="eager" class="fbcarte__photo" />
+      <span class="fbcarte__bas">
+        <span class="fbcarte__nom">Kausar Group sur Facebook</span>
+        <span class="fbcarte__lien">facebook.com/KausarCity<span class="sr-only"> (nouvel onglet)</span></span>
+      </span>
+    </a>
   </section>
 </Base>
