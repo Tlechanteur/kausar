@@ -1,0 +1,33 @@
+---
+/**
+ * Promotions : les promos sont publiées chaque semaine sur Facebook.
+ * La page explique où les trouver, renvoie vers Facebook dans un nouvel onglet
+ * et peut afficher le fil Facebook sur place (chargé au clic).
+ */
+import Base from '../layouts/Base.astro';
+import FacebookFil from '../components/FacebookFil.astro';
+import { facebook } from '../data/magasins';
+import { lien } from '../lib/lien';
+---
+<Base
+  title="Promotions et nouveautés | Kausar Liège, Verviers et Alleur"
+  description="Les promotions de la semaine, les nouveautés et les arrivages des magasins Kausar, publiés sur la page Facebook de Kausar."
+  page="promotions"
+>
+  <section class="wrap promos">
+    <div class="promos__txt">
+      <h1>Nos promotions</h1>
+      <p class="promos__lede">Kausar publie ses promotions sur sa page Facebook, avec les nouveaux produits et les nouvelles références de nos magasins.</p>
+      <p class="hero__actions">
+        <a class="btn btn--rouge" href={facebook} target="_blank" rel="noopener">Voir les promos sur Facebook<span class="sr-only"> (nouvel onglet)</span></a>
+        <a class="btn btn--creux" href={lien('/contact/')}>Trouver mon magasin</a>
+      </p>
+      <ul class="promos__points" role="list">
+        <li><span class="sq" aria-hidden="true" style="--c: var(--rouge)"></span>Les promotions et les nouveautés de nos magasins.</li>
+        <li><span class="sq" aria-hidden="true" style="--c: var(--vert)"></span>Nos astuces cuisine et beauté.</li>
+        <li><span class="sq" aria-hidden="true" style="--c: var(--ciel)"></span>Abonnez-vous à la page pour les voir dès leur parution.</li>
+      </ul>
+    </div>
+    <FacebookFil page={facebook} />
+  </section>
+</Base>

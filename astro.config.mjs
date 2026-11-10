@@ -11,11 +11,10 @@ const b = base.replace(/\/$/, '');
 export default defineConfig({
   site,
   base,
-  // les pages magasins gardent les adresses de l'ancien site WordPress (src/pages/[page].astro) ;
-  // les autres anciennes pages renvoient vers l'accueil
+  // les pages magasins et /promotions/ gardent les adresses de l'ancien site WordPress ;
+  // l'ancienne page News (le fil Facebook) renvoie vers Promotions, la page cookies vers l'accueil
   redirects: {
-    '/promotions': `${b}/`,
-    '/news': `${b}/`,
+    '/news': `${b}/promotions/`,
     '/politique-de-cookies-ue': `${b}/`,
   },
 });

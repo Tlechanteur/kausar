@@ -9,12 +9,12 @@ import logo from '../assets/logos/logosite01XS.jpg';
 interface Props {
   title: string;
   description: string;
-  page?: 'accueil' | 'contact';
+  page?: 'accueil' | 'contact' | 'promotions';
 }
 const { title, description, page = 'accueil' } = Astro.props;
 const liens = [
-  { href: lien('/contact'), label: 'Nos magasins', page: 'contact' },
-  { href: facebook, label: 'Promotions' },
+  { href: lien('/contact/'), label: 'Nos magasins', page: 'contact' },
+  { href: lien('/promotions/'), label: 'Promotions', page: 'promotions' },
   { href: lien('/#marques'), label: 'Nos marques' },
   { href: lien('/#a-propos'), label: 'À propos' },
 ];
@@ -66,7 +66,7 @@ const liens = [
           <ul>
             <li><a href={lien('/#a-propos')}>À propos de Kausar</a></li>
             <li><a href={lien('/contact')}>Nos magasins</a></li>
-            <li><a href={facebook}>News et promotions</a></li>
+            <li><a href={lien('/promotions/')}>News et promotions</a></li>
           </ul>
         </div>
         <div>
@@ -74,7 +74,7 @@ const liens = [
           <ul>
             <li><a href={lien('/ethnic-supermarket/')}>Ethnic Supermarket</a></li>
             <li><a href={lien('/exotic-city/')}>Exotic City, pour les pros</a></li>
-            <li><a href={facebook}>Kausar sur Facebook</a></li>
+            <li><a href={facebook} target="_blank" rel="noopener">Kausar sur Facebook<span class="sr-only"> (nouvel onglet)</span></a></li>
           </ul>
         </div>
       </div>

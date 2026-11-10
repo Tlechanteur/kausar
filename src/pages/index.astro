@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import ListeMagasins from '../components/ListeMagasins.astro';
 import Visite from '../components/Visite.astro';
-import { magasins, facebook } from '../data/magasins';
+import { magasins } from '../data/magasins';
+import { lien } from '../lib/lien';
 import em01 from '../assets/photos/em01.jpg';
 import c1 from '../assets/photos/c1.jpg';
 import c2 from '../assets/photos/c2.jpg';
@@ -66,7 +67,7 @@ const coronmeuse = magasins.find((m) => m.slug === 'coronmeuse')!;
       <h1>Le monde entier, au coin de la rue.</h1>
       <p class="hero__lede">Alimentation africaine et asiatique, cosmétiques, frais et surgelés : 6 magasins Kausar où toutes les cultures se croisent.</p>
       <p class="hero__actions">
-        <a class="btn btn--rouge" href={facebook}>Voir les promotions</a>
+        <a class="btn btn--rouge" href={lien('/promotions/')}>Voir les promotions</a>
         <a class="btn btn--creux" href="#magasins">Nos 6 magasins</a>
       </p>
     </div>
@@ -137,7 +138,7 @@ const coronmeuse = magasins.find((m) => m.slug === 'coronmeuse')!;
         <h2 id="promo-titre">Les promos, c’est sur Facebook</h2>
         <p>Chaque semaine, nos nouveautés et nos prix choisis.</p>
       </div>
-      <a class="btn btn--blanc" href={facebook}>Voir les promotions</a>
+      <a class="btn btn--blanc" href={lien('/promotions/')}>Voir les promotions</a>
     </div>
   </section>
 
