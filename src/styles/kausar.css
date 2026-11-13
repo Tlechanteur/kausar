@@ -245,7 +245,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .pied ul a { color: var(--texte); text-decoration: none; transition: color 0.2s; }
 .pied ul a:hover { color: var(--marine); text-decoration: underline; text-decoration-color: var(--ciel); text-underline-offset: 4px; }
 .copyright { background: var(--marine); color: var(--blanc-doux); font-size: 0.8125rem; font-weight: 400; padding-block: 1rem; }
-.copyright a { color: var(--blanc); font-weight: 400; }
+.copyright a { color: var(--blanc); font-weight: 400; text-decoration: none; }
 .copyright a:hover { color: var(--vert); }
 
 /* ---------- apparitions au défilement (le contenu reste visible sans JavaScript) ---------- */

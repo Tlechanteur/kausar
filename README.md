@@ -84,4 +84,4 @@ Pour une mise en ligne dans un sous-dossier ailleurs, deux variables d'environne
 
 ---
 
-Photos et site : [lechanteur.be](https://www.lechanteur.be) pour Alchimie srl.
+Photos et site : [fullbooking.com](https://www.fullbooking.com/creation-site-internet/) pour Alchimie srl.
