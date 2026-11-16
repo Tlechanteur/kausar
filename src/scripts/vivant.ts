@@ -81,4 +81,62 @@ export function compter() {
   els.forEach((e) => io.observe(e));
 }
 
+/**
+ * La mosaïque vivante de l'accueil. Deux ambiances qui alternent pour que ça varie :
+ *  - au repos, chaque carré change seul, à son propre rythme, en fondu tranquille ;
+ *  - de temps en temps, une « grande vague » retourne les 9 carrés presque ensemble,
+ *    en diagonale, et tout change d'un coup.
+ * Sans JavaScript ou en mouvement réduit, seule la première face de chaque carré reste.
+ */
+export function diaporama() {
+  const tuiles = [...document.querySelectorAll<HTMLElement>('.tuile[data-diapo]')];
+  if (calme() || !tuiles.length) return;
+  const COLS = 3;
+
+  const carres = tuiles.map((el, idx) => {
+    const faces = [...el.querySelectorAll<HTMLElement>('.face')];
+    return { el, faces, i: 0, ligne: Math.floor(idx / COLS), col: idx % COLS, minuteur: 0 };
+  });
+
+  const changer = (c: typeof carres[number]) => {
+    if (c.faces.length < 2) return;
+    c.faces[c.i].classList.remove('is-on');
+    c.i = (c.i + 1) % c.faces.length;
+    c.faces[c.i].classList.add('is-on');
+  };
+
+  // fondu simple (ambiance repos)
+  const fondu = (c: typeof carres[number]) => changer(c);
+
+  // retournement (ambiance vague) : on bascule, on change à mi-chemin, on revient
+  const retourner = (c: typeof carres[number]) => {
+    c.el.classList.add('bascule');
+    window.setTimeout(() => { changer(c); c.el.classList.remove('bascule'); }, 300);
+  };
+
+  const REPOS = 5200; // un carré change environ toutes les 5 s au repos
+
+  const lancerRepos = () => carres.forEach((c, k) => {
+    // départ décalé pour que les carrés ne partent pas ensemble
+    window.setTimeout(() => {
+      fondu(c);
+      c.minuteur = window.setInterval(() => fondu(c), REPOS + (k % 3) * 600);
+    }, 2000 + k * 700);
+  });
+
+  const stopperRepos = () => carres.forEach((c) => c.minuteur && window.clearInterval(c.minuteur));
+
+  const vague = () => {
+    stopperRepos();
+    // les 9 carrés se retournent en diagonale, presque ensemble
+    carres.forEach((c) => window.setTimeout(() => retourner(c), (c.ligne + c.col) * 95));
+    // puis on reprend l'ambiance repos
+    window.setTimeout(lancerRepos, 1400);
+  };
+
+  lancerRepos();
+  // une grande vague de temps en temps
+  window.setInterval(vague, 21000);
+}
+
 export { calme };

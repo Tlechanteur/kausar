@@ -84,8 +84,8 @@ const liens = [
     </footer>
 
     <script>
-      import { etats, reveler, compter } from '../scripts/vivant';
-      etats(); reveler(); compter();
+      import { etats, reveler, compter, diaporama } from '../scripts/vivant';
+      etats(); reveler(); compter(); diaporama();
       // le menu mobile se referme après un clic
       document.querySelectorAll<HTMLAnchorElement>('.menu a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
     </script>

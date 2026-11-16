@@ -89,16 +89,25 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .hero__lede { font-size: 1.2rem; color: var(--texte); margin: 1.5rem 0 2rem; max-width: 34ch; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
-.mosaique { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
-.tuile { position: relative; aspect-ratio: 1; margin: 0; border-radius: var(--r); overflow: hidden; animation: tuile 0.7s var(--ease) both; animation-delay: calc(var(--i) * 70ms + 0.2s); }
+.mosaique { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; perspective: 1400px; }
+.tuile { position: relative; aspect-ratio: 1; margin: 0; border-radius: var(--r); overflow: hidden; animation: tuile 0.7s var(--ease) both; animation-delay: calc(var(--i) * 70ms + 0.2s); transform-origin: center; }
 @keyframes tuile { from { opacity: 0; transform: scale(0.7) rotate(-6deg); } }
-.tuile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.tuile__b { opacity: 0; animation: echange 12s ease-in-out infinite; animation-delay: calc(var(--i) * 1.3s + 2s); }
-@keyframes echange { 0%, 40% { opacity: 0; } 50%, 90% { opacity: 1; } 100% { opacity: 0; } }
-.tuile--couleur { display: flex; align-items: flex-end; padding: 0.9rem; background: var(--c); color: var(--blanc); }
-.tuile--couleur span { font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.6rem); }
-.tuile--clair { color: var(--marine); }
-.tuile--couleur::after { content: ''; position: absolute; top: 14%; right: 14%; width: 22%; aspect-ratio: 1; background: var(--blanc); animation: carre 6s var(--ease) infinite; animation-delay: calc(var(--i) * 0.4s); }
+/* chaque carré empile ses « faces » (photo ou aplat de couleur) ; le JS fait tourner .is-on */
+.tuile .face { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tuile img.face { object-fit: cover; }
+.js .tuile[data-diapo] .face { opacity: 0; transition: opacity 0.9s var(--ease); }
+.js .tuile[data-diapo] .face.is-on { opacity: 1; }
+/* sans JavaScript, on garde seulement la première face de chaque carré */
+html:not(.js) .tuile[data-diapo] .face:not(.is-on) { display: none; }
+/* la grande vague : le carré se retourne, on change la face à mi-parcours (invisible) */
+.js .tuile[data-diapo].bascule { transform: rotateY(90deg); transition: transform 0.3s var(--ease); }
+.js .tuile[data-diapo] { transition: transform 0.34s var(--ease); }
+.js .tuile[data-diapo].bascule .face { transition-duration: 0s; }
+/* face couleur : l'aplat de marque avec le continent */
+.face--couleur { display: flex; align-items: flex-end; padding: 0.9rem; background: var(--c); color: var(--blanc); }
+.face--couleur span { font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.6rem); }
+.face--couleur.tuile--clair { color: var(--marine); }
+.face--couleur.is-on::after { content: ''; position: absolute; top: 14%; right: 14%; width: 22%; aspect-ratio: 1; background: var(--blanc); animation: carre 6s var(--ease) infinite; animation-delay: calc(var(--i) * 0.4s); }
 @keyframes carre { 0%, 70% { transform: none; } 80%, 100% { transform: rotate(90deg); } }
 
 /* ---------- accueil : la liste courte des magasins ---------- */
@@ -291,7 +300,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .tuile__b { animation: none; }
+  /* on fige la mosaïque : seule la première face reste visible, pas de retournement */
+  .js .tuile[data-diapo] .face:not(.is-on) { opacity: 0; }
+  .js .tuile[data-diapo].bascule { transform: none; }
   .defile { width: auto; animation: none; justify-content: center; }
   .defile__piste { flex-wrap: wrap; justify-content: center; padding: 0 1.25rem; }
   .defile__piste[aria-hidden] { display: none; }

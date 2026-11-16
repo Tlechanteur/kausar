@@ -15,6 +15,18 @@ import k03 from '../assets/photos/k03.jpg';
 import k08 from '../assets/photos/k08.jpg';
 import m1 from '../assets/photos/m1.jpg';
 import m2 from '../assets/photos/m2.jpg';
+import clienteMarche from '../assets/photos/cliente-marche.jpg';
+import coupleCuisine from '../assets/photos/couple-cuisine.jpg';
+import beauteSoin from '../assets/photos/beaute-soin.jpg';
+import beauteCheveux from '../assets/photos/beaute-cheveux.jpg';
+import epicesCuilleres from '../assets/photos/epices-cuilleres.jpg';
+import legumineuses from '../assets/photos/legumineuses.jpg';
+import etalFruits from '../assets/photos/etal-fruits.jpg';
+import miel from '../assets/photos/miel.jpg';
+import riz from '../assets/photos/riz.jpg';
+import tajines from '../assets/photos/tajines.jpg';
+import platsCurry from '../assets/photos/plats-curry.jpg';
+import gingembreCitron from '../assets/photos/gingembre-citron.jpg';
 import africaVillage from '../assets/marques/africa-village.png';
 import exoticFoods from '../assets/marques/exotic-foods.png';
 import desi from '../assets/marques/desi.png';
@@ -27,17 +39,23 @@ import royalSeaFoods from '../assets/marques/royal-sea-foods.png';
 import utouch from '../assets/marques/utouch.png';
 import javed from '../assets/photos/javed-kausar.png';
 
-// la mosaïque du haut : des photos qui changent et des carrés aux couleurs des logos
+// La mosaïque du haut : 9 carrés qui s'animent. Chaque carré enchaîne ses « faces »,
+// une face étant soit une photo, soit un aplat aux couleurs des logos avec un continent.
+// Au repos, les carrés changent chacun à leur rythme (fondu tranquille) ; de temps en temps,
+// une grande vague retourne les 9 carrés presque ensemble. On mêle aliments et visages
+// pour une page d'accueil vivante et humaine.
+const P = (src, pos) => ({ img: src, pos });                 // une face photo
+const C = (c, mot, clair) => ({ c, mot, clair });            // une face couleur + continent
 const mosaique = [
-  { a: em01, b: c1, alt: 'Fruits et légumes à l’entrée du magasin de la place du Marché' },
-  { c: 'var(--rouge)', mot: 'Afrique' },
-  { a: allee, b: k03, alt: 'Une allée du supermarché de Coronmeuse, les huiles au premier plan' },
-  { c: 'var(--vert)', mot: 'Asie', clair: true },
-  { a: fruits, b: k08, alt: 'Des cageots d’oranges, de pommes et de bananes' },
-  { c: 'var(--ciel)', mot: 'Europe' },
-  { a: c3, b: m2, alt: 'Le rayon cosmétiques et soins' },
-  { c: 'var(--magenta)', mot: 'Beauté' },
-  { a: m1, b: c2, alt: 'Riz, haricots et fruits secs en rayon' },
+  { faces: [P(em01), P(clienteMarche, 'center 32%'), P(etalFruits)], alt: 'Fruits et légumes à l’entrée du magasin, et l’accueil en magasin' },
+  { faces: [C('var(--rouge)', 'Afrique'), P(epicesCuilleres), P(platsCurry)], alt: 'Épices et plats du monde' },
+  { faces: [P(allee), P(coupleCuisine, 'center 30%'), P(tajines)], alt: 'Une allée du supermarché de Coronmeuse, et la cuisine qui rassemble' },
+  { faces: [C('var(--vert)', 'Asie', true), P(riz), P(legumineuses)], alt: 'Riz et légumineuses' },
+  { faces: [P(fruits), P(k08), P(miel)], alt: 'Fruits frais, rayons et épicerie fine' },
+  { faces: [C('var(--ciel)', 'Europe'), P(gingembreCitron)], alt: 'Gingembre, citron et miel' },
+  { faces: [P(c3), P(beauteSoin, 'center 30%'), P(beauteCheveux, 'center 22%')], alt: 'Le rayon cosmétiques et soins, et les soins du visage' },
+  { faces: [C('var(--magenta)', 'Beauté'), P(gingembreCitron)], alt: 'Soins naturels' },
+  { faces: [P(m1), P(k03), P(c2)], alt: 'Riz, haricots et fruits secs en rayon' },
 ];
 
 // les marques propres de Kausar, du bandeau de l'ancien site (logos d'origine, 200 × 200)
@@ -72,13 +90,25 @@ const coronmeuse = magasins.find((m) => m.slug === 'coronmeuse')!;
       </p>
     </div>
     <div class="mosaique">
-      {mosaique.map((t, i) => t.a ? (
-        <figure class="tuile" style={`--i:${i}`}>
-          <Image src={t.a} alt={t.alt} widths={[320, 560]} sizes="(min-width: 60rem) 14vw, 30vw" width={560} loading="eager" />
-          <Image src={t.b} alt="" widths={[320, 560]} sizes="(min-width: 60rem) 14vw, 30vw" width={560} class="tuile__b" />
+      {mosaique.map((t, i) => (
+        <figure class="tuile" style={`--i:${i}`} data-diapo role="img" aria-label={t.alt}>
+          {t.faces.map((f, j) => (
+            f.img ? (
+              <Image
+                src={f.img}
+                alt=""
+                widths={[320, 560]}
+                sizes="(min-width: 60rem) 14vw, 30vw"
+                width={560}
+                loading={j === 0 ? 'eager' : 'lazy'}
+                class:list={['face', { 'is-on': j === 0 }]}
+                style={f.pos ? `object-position:${f.pos}` : undefined}
+              />
+            ) : (
+              <div class:list={['face', 'face--couleur', { 'is-on': j === 0, 'tuile--clair': f.clair }]} style={`--c:${f.c}`}><span>{f.mot}</span></div>
+            )
+          ))}
         </figure>
-      ) : (
-        <div class:list={['tuile', 'tuile--couleur', { 'tuile--clair': t.clair }]} style={`--i:${i}; --c:${t.c}`}><span>{t.mot}</span></div>
       ))}
     </div>
   </section>
